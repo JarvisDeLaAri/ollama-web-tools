@@ -1,0 +1,30 @@
+[Unit]
+Description=OllamaWebTools - Internal Web Tools API
+After=network.target ollama.service
+Wants=ollama.service
+
+[Service]
+Type=simple
+User=appson
+Group=appson
+WorkingDirectory=/opt/ollama-web-tools
+Environment=PORT=10021
+Environment=HOST=127.0.0.1
+Environment=OLLAMA_URL=http://127.0.0.1:11434
+Environment=OLLAMA_MODEL=kimi-k2.5:cloud
+Environment=LOG_LEVEL=info
+Environment=PYTHONUNBUFFERED=1
+EnvironmentFile=-/opt/ollama-web-tools/.env
+ExecStart=/usr/bin/python3 /opt/ollama-web-tools/main.py
+Restart=always
+RestartSec=5
+
+# Security
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/ollama-web-tools/logs
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
