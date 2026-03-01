@@ -65,8 +65,7 @@ Response:
       "url": "https://...",
       "content": "..."
     }
-  ],
-  "model_used": "kimi-k2.5:cloud"
+  ]
 }
 ```
 
@@ -87,8 +86,7 @@ Response:
   "url": "https://example.com",
   "title": "...",
   "content": "...",
-  "links": ["https://..."],
-  "model_used": "kimi-k2.5:cloud"
+  "links": ["https://..."]
 }
 ```
 
