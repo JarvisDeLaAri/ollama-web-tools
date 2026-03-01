@@ -70,8 +70,7 @@ Response:
 {
   "status": "healthy",
   "ollama_status": "connected",
-  "key_configured": true,
-  "model": "kimi-k2.5:cloud"
+  "key_configured": true
 }
 ```
 
