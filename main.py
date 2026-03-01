@@ -18,7 +18,6 @@ load_dotenv()
 PORT = int(os.getenv("PORT", "10021"))
 HOST = os.getenv("HOST", "127.0.0.1")
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://127.0.0.1:11434")
-OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "kimi-k2.5:cloud")
 LOG_LEVEL = os.getenv("LOG_LEVEL", "info").upper()
 OLLAMA_API_KEY = os.getenv("OLLAMA_API_KEY", "").strip()
 
@@ -47,7 +46,6 @@ class SearchResult(BaseModel):
 class SearchResponse(BaseModel):
     query: str
     results: list[SearchResult]
-    model_used: str
 
 
 class FetchRequest(BaseModel):
@@ -60,14 +58,12 @@ class FetchResponse(BaseModel):
     title: str
     content: str
     links: list[str] = []
-    model_used: str
 
 
 class HealthResponse(BaseModel):
     status: str
     ollama_status: str
     key_configured: bool
-    model: str
 
 
 def build_auth_headers() -> dict[str, str]:
@@ -125,7 +121,6 @@ async def real_web_fetch(url: str) -> FetchResponse:
         title=data.get("title", ""),
         content=data.get("content", ""),
         links=[str(x) for x in data.get("links", []) if isinstance(x, str)],
-        model_used=OLLAMA_MODEL,
     )
 
 
@@ -152,7 +147,6 @@ async def health():
         status="healthy",
         ollama_status="connected" if await check_local_ollama() else "disconnected",
         key_configured=bool(OLLAMA_API_KEY),
-        model=OLLAMA_MODEL,
     )
 
 
@@ -161,7 +155,7 @@ async def search(request: SearchRequest):
     logger.info("Search: %s", request.query)
     try:
         results = await real_web_search(request.query, request.count)
-        return SearchResponse(query=request.query, results=results, model_used=OLLAMA_MODEL)
+        return SearchResponse(query=request.query, results=results)
     except httpx.HTTPStatusError as e:
         logger.error("Ollama API error: %s - %s", e.response.status_code, e.response.text)
         raise HTTPException(status_code=e.response.status_code, detail=e.response.text) from e
