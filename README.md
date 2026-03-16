@@ -2,6 +2,12 @@
 
 ## Setup for Human:
 
+### install ollama:
+1. install - `curl -fsSL https://ollama.com/install.sh | sh`
+2. get model and test - `ollama run qwen3.5:cloud` (exit with ctrl + d) (`ollama pull <other-model-name>:cloud` for more)
+3. add to models list - `openclaw onboard` - chooose ollama provider
+
+### install ollama search tools api to your openclaw:
 1. goto `https://ollama.com/settings/keys` and create api key (NOT device key!)
 2. give this repo to your OpenClaw and tell him to duplicate and make it work, while giving him the key
 3. give any agent to read `how-to-use-for-ai.md`
